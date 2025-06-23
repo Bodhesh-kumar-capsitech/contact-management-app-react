@@ -28,7 +28,7 @@ export default function ContactList({ contacts, onEdit, onDelete }: Props) {
           <div className="flex gap-2 sm:justify-end">
             <button
               onClick={() => onEdit(contact)}
-              className="text-sm bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition"
+              className="text-sm bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-400 transition"
             >
               Edit
             </button>

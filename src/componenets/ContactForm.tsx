@@ -42,7 +42,7 @@ export default function ContactForm({ onSave, editContact, onCancel }: Props) {
     if (!email.trim()) newErrors.email = 'Email is required.';
     else if (!emailRegex.test(email)) newErrors.email = 'Invalid email format.';
     if (!phone.trim()) newErrors.phone = 'Phone is required.';
-    else if (!phoneRegex.test(phone)) newErrors.phone = 'Phone must be 10 digits.';
+    else if (!phoneRegex.test(phone)) newErrors.phone = 'Phone number must be 10 digits.';
 
     setErrors(newErrors);
 

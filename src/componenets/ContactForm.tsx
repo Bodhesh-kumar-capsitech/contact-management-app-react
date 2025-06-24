@@ -3,10 +3,11 @@ import { type Contact } from '../types/Contact';
 import toast from 'react-hot-toast';
 
 interface Props {
-  onSave: (contact: Contact) => void;
+  onSave: (contact: Contact) => Promise<void>;
   editContact?: Contact | null;
   onCancel: () => void;
 }
+
 
 export default function ContactForm({ onSave, editContact, onCancel }: Props) {
   const [name, setName] = useState('');
@@ -57,31 +58,32 @@ export default function ContactForm({ onSave, editContact, onCancel }: Props) {
     errors.email !== '' ||
     errors.phone !== '';
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!validate()) return;
 
-     if (editContact) {
-        toast.dismiss();
+  const newContact: Omit<Contact, 'id'> = {
+    name: name.trim(),
+    email: email.trim(),
+    phone: Number(phone),
+  };
+
+  if (editContact) {
+    await onSave({ ...editContact, ...newContact });
     toast.success('Contact updated successfully!');
   } else {
-    toast.dismiss();
+    await onSave(newContact as Contact); // backend will assign `id`
     toast.success('Contact added successfully!');
   }
 
-    const newContact: Contact = {
-      id: editContact?.id || Date.now().toString(),
-      name: name.trim(),
-      email: email.trim(),
-      phone: Number(phone),
-    };
+  setName('');
+  setEmail('');
+  setPhone('');
+  setErrors({ name: '', email: '', phone: '' });
+};
 
-    onSave(newContact);
-    setName('');
-    setEmail('');
-    setPhone('');
-    setErrors({ name: '', email: '', phone: '' });
-  };
+
+
 
   return (
     <div className="p-4 sm:p-6 md:p-8 flex justify-center items-center container mx-auto">

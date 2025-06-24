@@ -7,7 +7,7 @@ const BASE_URL = "http://localhost:5007/api/contacts";
 export const getContacts = async (): Promise<Contact[]> => {
   const res = await axios.get(BASE_URL);
   return res.data.map((c: any) => ({
-    id: c._id || c.id, // ⬅️ fallback for safety
+    id: c._id || c.id,
     name: c.name,
     email: c.email,
     phone: c.phone,
@@ -30,7 +30,6 @@ export const getContactById = async (id: string): Promise<Contact | null> => {
   }
 };
 
-// ✅ Create contact without id; map _id → id from response
 export const createContact = async (
   contact: Omit<Contact, "id">
 ): Promise<Contact> => {
@@ -44,7 +43,6 @@ export const createContact = async (
   };
 };
 
-// ✅ Update by id — backend expects full contact object
 export const updateContact = async (id: string, contact: Contact): Promise<void> => {
   await axios.put(`${BASE_URL}/${id}`, {
     name: contact.name,
